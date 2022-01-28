@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.mainactivity.MainActivity">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="15dp"
+        android:contentDescription="@string/logo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo_horizontal" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_user"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="20dp"
+        android:visibility="gone"
+        app:layout_constraintBaseline_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        tools:listitem="@layout/item_user" />
+
+    <SearchView
+        android:id="@+id/search_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:queryHint="search user"
+        android:maxWidth="280dp"
+        app:layout_constraintEnd_toStartOf="@+id/ib_favorite"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_search"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="140dp"
+        android:contentDescription="@string/placeholder_search"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.54"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:srcCompat="@drawable/placeholder_search" />
+
+    <TextView
+        android:id="@+id/tv_ph_search"
+        style="@style/TextStyle.title"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="@string/search_ph_text"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="@+id/iv_search"
+        app:layout_constraintStart_toStartOf="@+id/iv_search"
+        app:layout_constraintTop_toBottomOf="@+id/iv_search" />
+
+    <ImageView
+        android:id="@+id/iv_not_found"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="140dp"
+        android:contentDescription="@string/placeholder_not_found"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.54"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:srcCompat="@drawable/placeholder_not_found" />
+
+    <TextView
+        android:id="@+id/tv_ph_not_found"
+        style="@style/TextStyle.title"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="@string/not_found"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@+id/iv_not_found"
+        app:layout_constraintStart_toStartOf="@+id/iv_not_found"
+        app:layout_constraintTop_toBottomOf="@+id/iv_not_found" />
+
+    <ImageView
+        android:id="@+id/iv_error"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="140dp"
+        android:contentDescription="@string/placeholder_error"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.54"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:srcCompat="@drawable/placeholder_error" />
+
+    <TextView
+        android:id="@+id/tv_ph_error"
+        style="@style/TextStyle.title"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="@string/placeholder_error_text"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/iv_error"
+        app:layout_constraintStart_toStartOf="@+id/iv_error"
+        app:layout_constraintTop_toBottomOf="@+id/iv_error" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
+
+    <ImageButton
+        android:id="@+id/ib_favorite"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="20dp"
+        android:background="?selectableItemBackground"
+        android:contentDescription="@string/favorite_icon"
+        app:layout_constraintEnd_toStartOf="@+id/ib_setting"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_favorite" />
+
+    <ImageButton
+        android:id="@+id/ib_setting"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        android:background="?selectableItemBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_setting"
+        android:contentDescription="@string/setting_icon" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

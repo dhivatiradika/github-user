@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.favorite.FavoriteActivity">
+
+    <ImageButton
+        android:id="@+id/ib_back"
+        style="@style/ImageButtonStyle"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_back"
+        android:contentDescription="@string/back" />
+
+    <TextView
+        android:id="@+id/textView"
+        style="@style/TextStyle.title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/favorite"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/ib_back"
+        app:layout_constraintTop_toTopOf="@+id/ib_back" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_user"
+        android:layout_width="match_parent"
+        android:layout_height="669dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ib_back" />
+
+    <ImageView
+        android:id="@+id/iv_not_found"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="140dp"
+        android:contentDescription="@string/placeholder_not_found"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.54"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ib_back"
+        app:srcCompat="@drawable/placeholder_not_found" />
+
+    <TextView
+        android:id="@+id/tv_ph_not_found"
+        style="@style/TextStyle.title"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="@string/no_favorite"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@+id/iv_not_found"
+        app:layout_constraintStart_toStartOf="@+id/iv_not_found"
+        app:layout_constraintTop_toBottomOf="@+id/iv_not_found" />
+</androidx.constraintlayout.widget.ConstraintLayout>

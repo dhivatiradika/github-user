@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">GitHub User</string>
+    <string name="user_image_profile">user image profile</string>
+    <string name="dummy_number">445</string>
+    <string name="followers">Followers</string>
+    <string name="icon_followers">icon followers</string>
+    <string name="logo">logo</string>
+    <string name="back">back</string>
+    <string name="share">share</string>
+    <string name="following">Following</string>
+    <string name="dot">dot</string>
+    <string name="icon_location">icon location</string>
+    <string name="icon_company">icon company</string>
+    <string name="icon_repository">icon repository</string>
+    <string name="repositories">%s Repositories</string>
+    <string name="text_share">Share</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="search_ph_text">Find github user using their username</string>
+    <string name="placeholder_search">placeholder search</string>
+    <string name="placeholder_not_found">placeholder not found</string>
+    <string name="not_found">The user you were looking for was not found</string>
+    <string name="placeholder_error">placeholder error</string>
+    <string name="placeholder_error_text">Cannot connect to a server at this moment</string>
+    <string name="no_followers">There is no followers</string>
+    <string name="no_following">There is no following</string>
+    <string name="favorite_icon">favorite icon</string>
+    <string name="setting_icon">setting icon</string>
+    <string name="no_favorite">Favorite list is empty</string>
+    <string name="favorite">Favorite</string>
+    <string name="title_confirm_delete">Delete from favorite?</string>
+    <string name="desc_confirm_delete">Are you sure want to delete this user from favorite?</string>
+    <string name="setting">Setting</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="app_version_footnote">GitHub User v1.0.0</string>
+
+</resources>
