@@ -17,11 +17,13 @@ import com.dhiva.githubuser.ui.userdetail.UserDetailActivity
 import com.dhiva.githubuser.ui.userdetail.UserDetailViewModel
 
 class FollowersFragment : Fragment() {
-    private lateinit var binding: FragmentViewPagerBinding
+    private var _binding: FragmentViewPagerBinding? = null
     private val viewModel: UserDetailViewModel by activityViewModels()
 
+    private val binding get() = _binding!!
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentViewPagerBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentViewPagerBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
@@ -59,6 +61,11 @@ class FollowersFragment : Fragment() {
         val intent = Intent(activity, UserDetailActivity::class.java)
         intent.putExtra(MainActivity.EXTRA_USERNAME, user.login)
         startActivity(intent)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 }

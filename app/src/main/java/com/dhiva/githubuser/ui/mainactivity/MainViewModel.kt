@@ -15,7 +15,9 @@ import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
+
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val _users = MutableLiveData<List<User>>()
     val users: LiveData<List<User>> = _users
@@ -28,20 +30,20 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val pref = SettingPreferences.getInstance(application.dataStore)
 
-    companion object{
+    companion object {
         private const val TAG = "MainViewModel"
     }
 
-    fun searchUser(query: String){
+    fun searchUser(query: String) {
         _isLoading.value = true
         val client = ApiConfig.getApiService().searchUser(query)
-        client.enqueue(object : Callback<SearchUserResponse>{
+        client.enqueue(object : Callback<SearchUserResponse> {
             override fun onResponse(
                 call: Call<SearchUserResponse>,
                 response: Response<SearchUserResponse>
             ) {
                 _isLoading.value = false
-                if (response.isSuccessful){
+                if (response.isSuccessful) {
                     _users.value = response.body()?.items
                     _isFailure.value = false
                 } else {

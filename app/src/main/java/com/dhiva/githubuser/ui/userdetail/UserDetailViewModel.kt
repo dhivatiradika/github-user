@@ -40,10 +40,6 @@ class UserDetailViewModel(application: Application) : AndroidViewModel(applicati
     private val _isFollowingFragmentCreated = MutableLiveData<Boolean>()
     val isFollowingFragmentCreated: LiveData<Boolean> = _isFollowingFragmentCreated
 
-    companion object{
-        private const val TAG = "UserDetailViewModel"
-    }
-
     fun getUser(username: String){
         _isLoading.value = true
         val client = ApiConfig.getApiService().getUser(username)
@@ -134,6 +130,10 @@ class UserDetailViewModel(application: Application) : AndroidViewModel(applicati
 
     fun deleteFavorite(user: UserEntity){
         userRepository.delete(user)
+    }
+
+    companion object{
+        private const val TAG = "UserDetailViewModel"
     }
 
 }

@@ -16,12 +16,14 @@ import com.dhiva.githubuser.ui.mainactivity.MainActivity
 import com.dhiva.githubuser.ui.userdetail.UserDetailActivity
 import com.dhiva.githubuser.ui.userdetail.UserDetailViewModel
 
-class FolllowingFragment : Fragment() {
-    private lateinit var binding: FragmentViewPagerBinding
+class FollowingFragment : Fragment() {
+    private var _binding: FragmentViewPagerBinding? = null
     private val viewModel: UserDetailViewModel by activityViewModels()
 
+    private val binding get() = _binding!!
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentViewPagerBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentViewPagerBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
@@ -61,4 +63,8 @@ class FolllowingFragment : Fragment() {
         startActivity(intent)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
