@@ -40,7 +40,13 @@ class FollowersFragment(private val username: String?) : Fragment() {
                 }
                 is Resource.Success -> {
                     binding.progressBar.visibility = View.GONE
-                    if (users.data != null && users.data.isNotEmpty()){
+
+                    var listUser = listOf<User>()
+                    users.data?.let {
+                        listUser = it
+                    }
+
+                    if (listUser.isNotEmpty()){
                         listAdapter.setData(users.data)
                     } else {
                         binding.tvNoData.visibility = View.VISIBLE

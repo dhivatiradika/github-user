@@ -46,11 +46,13 @@ class UserDetailActivity : AppCompatActivity(), View.OnClickListener {
         userDetailViewModel.user.observe(this, { it ->
             when(it){
                 is Resource.Loading -> {
+                    binding.fabFav.visibility = View.GONE
                     binding.progressBar.visibility = View.VISIBLE
                     binding.mainView.visibility = View.GONE
                     isErrorPHVisible(false)
                 }
                 is Resource.Success -> {
+                    binding.fabFav.visibility = View.VISIBLE
                     binding.progressBar.visibility = View.GONE
                     binding.mainView.visibility = View.VISIBLE
                     user = it.data

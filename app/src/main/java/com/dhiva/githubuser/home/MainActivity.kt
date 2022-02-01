@@ -52,10 +52,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         isErrorPHVisible(false)
                     }
                     is Resource.Success -> {
-                        Log.i("HASIL ALL USER", isFocus.toString())
                         binding.progressBar.visibility = View.GONE
+
+                        var listUser = listOf<User>()
+                        users.data?.let {
+                            listUser = it
+                        }
+
                         if (isFocus){
-                            if (users.data != null && users.data.isNotEmpty()){
+                            if (listUser.isNotEmpty()){
                                 binding.rvAllUser.visibility = View.VISIBLE
                                 listAllUserAdapter.setData(users.data)
                             } else {
@@ -84,10 +89,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         isErrorPHVisible(false)
                     }
                     is Resource.Success -> {
-                        Log.i("HASIL USER", isFocus.toString())
                         binding.progressBar.visibility = View.GONE
+
+                        var listUser = listOf<User>()
+                        users.data?.let {
+                            listUser = it
+                        }
+
                         if (!isFocus){
-                            if (users.data != null && users.data.isNotEmpty()){
+                            if (listUser.isNotEmpty()){
                                 binding.rvUser.visibility = View.VISIBLE
                                 listAdapter.setData(users.data)
                             } else {

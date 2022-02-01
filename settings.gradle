@@ -7,3 +7,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "GitHub User"
 include ':app'
+include ':core'
