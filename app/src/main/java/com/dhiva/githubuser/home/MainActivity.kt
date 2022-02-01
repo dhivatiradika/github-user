@@ -7,22 +7,21 @@ import android.view.View
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dhiva.githubuser.R
 import com.dhiva.githubuser.core.data.Resource
 import com.dhiva.githubuser.core.domain.model.User
 import com.dhiva.githubuser.core.ui.ListUserAdapter
-import com.dhiva.githubuser.core.ui.ViewModelFactory
 import com.dhiva.githubuser.databinding.ActivityMainBinding
 import com.dhiva.githubuser.favorite.FavoriteActivity
 import com.dhiva.githubuser.userdetail.UserDetailActivity
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityMainBinding
     private val listAdapter = ListUserAdapter()
     private val listAllUserAdapter = ListUserAdapter()
-    private lateinit var mainViewModel: MainViewModel
+    private val mainViewModel: MainViewModel by viewModel()
     private var isFocus: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,9 +41,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun initViewModel(){
-        val factory = ViewModelFactory.getInstance(this)
-        mainViewModel = ViewModelProvider(this, factory)[MainViewModel::class.java]
-
         mainViewModel.allUsers.observe(this, {users ->
             if (users != null){
                 when(users){

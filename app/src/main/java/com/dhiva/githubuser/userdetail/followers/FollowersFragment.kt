@@ -6,21 +6,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dhiva.githubuser.R
 import com.dhiva.githubuser.core.data.Resource
 import com.dhiva.githubuser.core.domain.model.User
 import com.dhiva.githubuser.core.ui.ListUserAdapter
-import com.dhiva.githubuser.core.ui.ViewModelFactory
 import com.dhiva.githubuser.databinding.FragmentViewPagerBinding
 import com.dhiva.githubuser.home.MainActivity
 import com.dhiva.githubuser.userdetail.UserDetailActivity
 import com.dhiva.githubuser.userdetail.UserDetailViewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class FollowersFragment(private val username: String?) : Fragment() {
     private var _binding: FragmentViewPagerBinding? = null
-    private lateinit var viewModel: UserDetailViewModel
+    private val viewModel: UserDetailViewModel by viewModel()
     private val listAdapter = ListUserAdapter()
 
     private val binding get() = _binding!!
@@ -34,9 +33,6 @@ class FollowersFragment(private val username: String?) : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initRecyclerList()
-        val factory = ViewModelFactory.getInstance(requireActivity())
-        viewModel = ViewModelProvider(this, factory)[UserDetailViewModel::class.java]
-
         viewModel.followers.observe(viewLifecycleOwner, { users ->
             when(users){
                 is Resource.Loading -> {

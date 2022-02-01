@@ -5,18 +5,17 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dhiva.githubuser.core.domain.model.User
 import com.dhiva.githubuser.core.ui.ListUserAdapter
-import com.dhiva.githubuser.core.ui.ViewModelFactory
 import com.dhiva.githubuser.databinding.ActivityFavoriteBinding
 import com.dhiva.githubuser.home.MainActivity
 import com.dhiva.githubuser.userdetail.UserDetailActivity
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class FavoriteActivity : AppCompatActivity() {
     private lateinit var binding: ActivityFavoriteBinding
-    private lateinit var favoriteViewModel: FavoriteViewModel
+    private val favoriteViewModel: FavoriteViewModel by viewModel()
     private val listUserAdapter = ListUserAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,9 +29,6 @@ class FavoriteActivity : AppCompatActivity() {
     }
 
     private fun initViewModel() {
-        val factory = ViewModelFactory.getInstance(this)
-        favoriteViewModel = ViewModelProvider(this, factory)[FavoriteViewModel::class.java]
-
         favoriteViewModel.listUser.observe(this, {
             if (it.isNotEmpty()){
                 with(binding){
@@ -44,6 +40,7 @@ class FavoriteActivity : AppCompatActivity() {
                 with(binding){
                     ivNotFound.visibility = View.VISIBLE
                     tvPhNotFound.visibility = View.VISIBLE
+                    rvUser.visibility = View.GONE
                 }
             }
         })

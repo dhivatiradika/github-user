@@ -6,7 +6,7 @@ import com.dhiva.githubuser.core.data.source.local.room.UserAttributesDao
 import com.dhiva.githubuser.core.data.source.local.room.UserDao
 import kotlinx.coroutines.flow.Flow
 
-class LocalDataSource private  constructor(private val userDao: UserDao, private val userAttributesDao: UserAttributesDao) {
+class LocalDataSource(private val userDao: UserDao, private val userAttributesDao: UserAttributesDao) {
     companion object {
         private var instance: LocalDataSource? = null
 

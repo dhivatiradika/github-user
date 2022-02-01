@@ -7,22 +7,20 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProvider
 import com.dhiva.githubuser.R
 import com.dhiva.githubuser.core.data.Resource
 import com.dhiva.githubuser.core.domain.model.User
-import com.dhiva.githubuser.core.ui.ViewModelFactory
 import com.dhiva.githubuser.core.utils.loadImage
 import com.dhiva.githubuser.databinding.ActivityUserDetailBinding
 import com.dhiva.githubuser.home.MainActivity
 import com.google.android.material.tabs.TabLayoutMediator
-
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class UserDetailActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityUserDetailBinding
     private var user: User? = null
     private var username: String? = null
-    private lateinit var userDetailViewModel: UserDetailViewModel
+    private val userDetailViewModel: UserDetailViewModel by viewModel()
     private var isFavorite: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,9 +43,6 @@ class UserDetailActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun initViewModel() {
-        val factory = ViewModelFactory.getInstance(this)
-        userDetailViewModel = ViewModelProvider(this, factory)[UserDetailViewModel::class.java]
-
         userDetailViewModel.user.observe(this, { it ->
             when(it){
                 is Resource.Loading -> {
