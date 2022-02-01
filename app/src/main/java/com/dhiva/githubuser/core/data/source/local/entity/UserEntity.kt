@@ -35,5 +35,8 @@ data class UserEntity(
     var location: String?,
 
     @ColumnInfo(name = "public_repos")
-    var publicRepos: Int?
+    var publicRepos: Int?,
+
+    @ColumnInfo(name = "is_favorite")
+    var isFavorite: Boolean = false
 ) : Parcelable

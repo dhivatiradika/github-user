@@ -18,6 +18,20 @@
         app:srcCompat="@drawable/logo_horizontal" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_all_user"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="20dp"
+        android:visibility="visible"
+        app:layout_constraintBaseline_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        tools:listitem="@layout/item_user" />
+
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_user"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -29,7 +43,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
-        tools:listitem="@layout/item_user" />
+        tools:listitem="@layout/item_user" >
+
+    </androidx.recyclerview.widget.RecyclerView>
 
     <SearchView
         android:id="@+id/search_view"
@@ -47,7 +63,7 @@
         android:layout_height="300dp"
         android:layout_marginTop="140dp"
         android:contentDescription="@string/placeholder_search"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.54"
         app:layout_constraintStart_toStartOf="parent"
@@ -62,7 +78,7 @@
         android:layout_marginTop="20dp"
         android:gravity="center"
         android:text="@string/search_ph_text"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@+id/iv_search"
         app:layout_constraintStart_toStartOf="@+id/iv_search"
         app:layout_constraintTop_toBottomOf="@+id/iv_search" />

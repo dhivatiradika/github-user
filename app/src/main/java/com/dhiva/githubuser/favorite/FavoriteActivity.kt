@@ -2,20 +2,22 @@
 package com.dhiva.githubuser.favorite
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dhiva.githubuser.core.domain.model.User
 import com.dhiva.githubuser.core.ui.ListUserAdapter
-import com.dhiva.githubuser.core.data.source.remote.response.User
+import com.dhiva.githubuser.core.ui.ViewModelFactory
 import com.dhiva.githubuser.databinding.ActivityFavoriteBinding
 import com.dhiva.githubuser.home.MainActivity
 import com.dhiva.githubuser.userdetail.UserDetailActivity
 
 class FavoriteActivity : AppCompatActivity() {
     private lateinit var binding: ActivityFavoriteBinding
-    private val favoriteViewModel: FavoriteViewModel by viewModels()
+    private lateinit var favoriteViewModel: FavoriteViewModel
+    private val listUserAdapter = ListUserAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,15 +26,26 @@ class FavoriteActivity : AppCompatActivity() {
 
         initView()
         initViewModel()
+        initRecyclerList()
     }
 
     private fun initViewModel() {
+        val factory = ViewModelFactory.getInstance(this)
+        favoriteViewModel = ViewModelProvider(this, factory)[FavoriteViewModel::class.java]
+
         favoriteViewModel.listUser.observe(this, {
-            val users : List<User> = it.map { userEntity ->
-                User(userEntity.followers, userEntity.name, userEntity.avatarUrl, userEntity.following,
-                        userEntity.company, userEntity.location, userEntity.publicRepos, userEntity.login)
+            if (it.isNotEmpty()){
+                with(binding){
+                    ivNotFound.visibility = View.GONE
+                    tvPhNotFound.visibility = View.GONE
+                }
+                listUserAdapter.setData(it)
+            } else {
+                with(binding){
+                    ivNotFound.visibility = View.VISIBLE
+                    tvPhNotFound.visibility = View.VISIBLE
+                }
             }
-            showRecyclerList(users)
         })
     }
 
@@ -40,14 +53,13 @@ class FavoriteActivity : AppCompatActivity() {
         binding.ibBack.setOnClickListener { finish() }
     }
 
-    private fun showRecyclerList(listUsers: List<User>){
+    private fun initRecyclerList(){
         binding.rvUser.visibility = View.VISIBLE
         binding.rvUser.setHasFixedSize(true)
         binding.rvUser.layoutManager = LinearLayoutManager(this)
-        val listAdapter = ListUserAdapter(listUsers)
-        binding.rvUser.adapter = listAdapter
+        binding.rvUser.adapter = listUserAdapter
 
-        listAdapter.setOnItemClickCallback(object : ListUserAdapter.OnItemClickCallback{
+        listUserAdapter.setOnItemClickCallback(object : ListUserAdapter.OnItemClickCallback{
             override fun onItemClicked(data: User) {
                 showSelectedUser(data)
             }

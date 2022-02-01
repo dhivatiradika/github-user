@@ -1,12 +1,11 @@
 package com.dhiva.githubuser.favorite
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import com.dhiva.githubuser.core.data.UserRepository
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import com.dhiva.githubuser.core.domain.usecase.UserUseCase
 
-class FavoriteViewModel(application: Application) : AndroidViewModel(application) {
+class FavoriteViewModel(userUseCase: UserUseCase) : ViewModel() {
 
-    private val userRepository: UserRepository = UserRepository(application)
-    val listUser = userRepository.getAllUser()
+    val listUser = userUseCase.getFavoriteUser().asLiveData()
 
 }

@@ -1,24 +1,29 @@
 package com.dhiva.githubuser.home
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.SearchView
-import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dhiva.githubuser.R
+import com.dhiva.githubuser.core.data.Resource
+import com.dhiva.githubuser.core.domain.model.User
 import com.dhiva.githubuser.core.ui.ListUserAdapter
-import com.dhiva.githubuser.core.data.source.remote.response.User
+import com.dhiva.githubuser.core.ui.ViewModelFactory
 import com.dhiva.githubuser.databinding.ActivityMainBinding
 import com.dhiva.githubuser.favorite.FavoriteActivity
 import com.dhiva.githubuser.userdetail.UserDetailActivity
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var listAdapter: ListUserAdapter
-    private val mainViewModel: MainViewModel by viewModels()
+    private val listAdapter = ListUserAdapter()
+    private val listAllUserAdapter = ListUserAdapter()
+    private lateinit var mainViewModel: MainViewModel
+    private var isFocus: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +33,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         initView()
         initViewModel()
         initSearchView()
+        initRecyclerView()
     }
 
     private fun initView() {
@@ -36,27 +42,70 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun initViewModel(){
-        mainViewModel.users.observe(this, {
-            if (it.isNotEmpty()){
-                showRecyclerList(it)
-            } else{
-                binding.rvUser.visibility = View.GONE
-                isNotFoundPHVisible(true)
+        val factory = ViewModelFactory.getInstance(this)
+        mainViewModel = ViewModelProvider(this, factory)[MainViewModel::class.java]
+
+        mainViewModel.allUsers.observe(this, {users ->
+            if (users != null){
+                when(users){
+                    is Resource.Loading -> {
+                        binding.progressBar.visibility = View.VISIBLE
+                        binding.rvUser.visibility = View.GONE
+                        isSearchPHVisible(false)
+                        isNotFoundPHVisible(false)
+                        isErrorPHVisible(false)
+                    }
+                    is Resource.Success -> {
+                        Log.i("HASIL ALL USER", isFocus.toString())
+                        binding.progressBar.visibility = View.GONE
+                        if (isFocus){
+                            if (users.data != null && users.data.isNotEmpty()){
+                                binding.rvAllUser.visibility = View.VISIBLE
+                                listAllUserAdapter.setData(users.data)
+                            } else {
+                                binding.rvAllUser.visibility = View.GONE
+                                isNotFoundPHVisible(true)
+                            }
+                        }
+                    }
+                    is Resource.Error -> {
+                        binding.progressBar.visibility = View.GONE
+                        binding.rvUser.visibility = View.GONE
+                        isErrorPHVisible(true)
+                    }
+                }
             }
         })
 
-        mainViewModel.isLoading.observe(this,{
-            binding.progressBar.visibility = if (it) View.VISIBLE else View.GONE
-            binding.rvUser.visibility = View.GONE
-            isSearchPHVisible(false)
-            isNotFoundPHVisible(false)
-            isErrorPHVisible(false)
-        })
-
-        mainViewModel.isFailure.observe(this, {
-            if (it){
-                binding.rvUser.visibility = View.GONE
-                isErrorPHVisible(true)
+        mainViewModel.users.observe(this, { users ->
+            if (users != null){
+                when(users){
+                    is Resource.Loading -> {
+                        binding.progressBar.visibility = View.VISIBLE
+                        binding.rvUser.visibility = View.GONE
+                        isSearchPHVisible(false)
+                        isNotFoundPHVisible(false)
+                        isErrorPHVisible(false)
+                    }
+                    is Resource.Success -> {
+                        Log.i("HASIL USER", isFocus.toString())
+                        binding.progressBar.visibility = View.GONE
+                        if (!isFocus){
+                            if (users.data != null && users.data.isNotEmpty()){
+                                binding.rvUser.visibility = View.VISIBLE
+                                listAdapter.setData(users.data)
+                            } else {
+                                binding.rvUser.visibility = View.GONE
+                                isNotFoundPHVisible(true)
+                            }
+                        }
+                    }
+                    is Resource.Error -> {
+                        binding.progressBar.visibility = View.GONE
+                        binding.rvUser.visibility = View.GONE
+                        isErrorPHVisible(true)
+                    }
+                }
             }
         })
 
@@ -72,11 +121,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun initSearchView(){
         binding.searchView.setOnQueryTextFocusChangeListener  { _, b ->
             binding.imageView.visibility = if (b) View.GONE else View.VISIBLE
+            isFocus = !b
             if (!b){
                 binding.rvUser.visibility = View.GONE
-                isSearchPHVisible(true)
+                binding.rvAllUser.visibility = View.VISIBLE
+                isSearchPHVisible(false)
                 isErrorPHVisible(false)
                 isNotFoundPHVisible(false)
+            } else {
+                binding.rvAllUser.visibility = View.GONE
+                isSearchPHVisible(true)
             }
         }
 
@@ -93,14 +147,22 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         })
     }
 
-    private fun showRecyclerList(listUsers: List<User>){
-        binding.rvUser.visibility = View.VISIBLE
+    private fun initRecyclerView(){
         binding.rvUser.setHasFixedSize(true)
         binding.rvUser.layoutManager = LinearLayoutManager(this)
-        listAdapter = ListUserAdapter(listUsers)
         binding.rvUser.adapter = listAdapter
 
         listAdapter.setOnItemClickCallback(object : ListUserAdapter.OnItemClickCallback{
+            override fun onItemClicked(data: User) {
+                showSelectedUser(data)
+            }
+        })
+
+        binding.rvAllUser.setHasFixedSize(true)
+        binding.rvAllUser.layoutManager = LinearLayoutManager(this)
+        binding.rvAllUser.adapter = listAllUserAdapter
+
+        listAllUserAdapter.setOnItemClickCallback(object : ListUserAdapter.OnItemClickCallback{
             override fun onItemClicked(data: User) {
                 showSelectedUser(data)
             }

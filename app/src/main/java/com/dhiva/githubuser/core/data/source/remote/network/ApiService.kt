@@ -1,36 +1,42 @@
-package com.dhiva.githubuser.core.data.source.remote
+package com.dhiva.githubuser.core.data.source.remote.network
 
 import com.dhiva.githubuser.BuildConfig
-import com.dhiva.githubuser.core.data.source.remote.response.SearchUserResponse
-import com.dhiva.githubuser.core.data.source.remote.response.User
-import retrofit2.Call
-import retrofit2.http.*
+import com.dhiva.githubuser.core.data.source.remote.response.ListUserResponse
+import com.dhiva.githubuser.core.data.source.remote.response.UserResponse
+import retrofit2.http.GET
+import retrofit2.http.Headers
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiService {
     @GET("search/users")
     @Headers("Authorization: token ${BuildConfig.GITHUB_TOKEN}")
-    fun searchUser(
+    suspend fun searchUser(
         @Query("q") query: String
-    ) : Call<SearchUserResponse>
+    ) : ListUserResponse
+
+    @GET("users")
+    @Headers("Authorization: token ${BuildConfig.GITHUB_TOKEN}")
+    suspend fun getUsers() : List<UserResponse>
 
     @GET("users/{username}")
     @Headers("Authorization: token ${BuildConfig.GITHUB_TOKEN}")
-    fun getUser(
+    suspend fun getUser(
         @Path("username") username: String
-    ) : Call<User>
+    ) : UserResponse
 
     @GET("users/{username}/followers")
     @Headers("Authorization: token ${BuildConfig.GITHUB_TOKEN}")
-    fun getFollowers(
+    suspend fun getFollowers(
         @Path("username") username: String,
         @Query("page") page: Int
-    ) : Call<List<User>>
+    ) : List<UserResponse>
 
     @GET("users/{username}/following")
     @Headers("Authorization: token ${BuildConfig.GITHUB_TOKEN}")
-    fun getFollowing(
+    suspend fun getFollowing(
         @Path("username") username: String,
         @Query("page") page: Int
-    ) : Call<List<User>>
+    ) : List<UserResponse>
 
 }

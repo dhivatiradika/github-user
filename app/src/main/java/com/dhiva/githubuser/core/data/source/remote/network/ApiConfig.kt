@@ -1,4 +1,4 @@
-package com.dhiva.githubuser.core.data.source.remote
+package com.dhiva.githubuser.core.data.source.remote.network
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

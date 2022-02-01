@@ -1,27 +1,28 @@
 package com.dhiva.githubuser.userdetail
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import androidx.activity.viewModels
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import com.dhiva.githubuser.R
-import com.dhiva.githubuser.core.data.source.remote.response.User
+import com.dhiva.githubuser.core.data.Resource
+import com.dhiva.githubuser.core.domain.model.User
+import com.dhiva.githubuser.core.ui.ViewModelFactory
+import com.dhiva.githubuser.core.utils.loadImage
 import com.dhiva.githubuser.databinding.ActivityUserDetailBinding
 import com.dhiva.githubuser.home.MainActivity
 import com.google.android.material.tabs.TabLayoutMediator
-import androidx.appcompat.app.AlertDialog
-import com.dhiva.githubuser.core.data.source.local.entity.UserEntity
 
 
 class UserDetailActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityUserDetailBinding
     private var user: User? = null
-    private var userFav: UserEntity? = null
     private var username: String? = null
-    private val userDetailViewModel: UserDetailViewModel by viewModels()
+    private lateinit var userDetailViewModel: UserDetailViewModel
     private var isFavorite: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,13 +31,13 @@ class UserDetailActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(binding.root)
 
         init()
-        getIntentData()
         initViewModel()
+        getIntentData()
         initViewPager()
     }
 
     private fun initViewPager() {
-        val sectionPagerAdapter = SectionPagerAdapter(this)
+        val sectionPagerAdapter = SectionPagerAdapter(this, username)
         binding.viewPager.adapter = sectionPagerAdapter
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             tab.text = resources.getString(TAB_TITLES[position])
@@ -44,31 +45,36 @@ class UserDetailActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun initViewModel() {
-        userDetailViewModel.user.observe(this, {
-            user = it
-            setDataToView(it)
-        })
-        userDetailViewModel.isFollowingFragmentCreated.observe(this, {
-            if (it) username?.let { it1 -> userDetailViewModel.getFollowing(it1, 1) }
-        })
-        userDetailViewModel.isLoading.observe(this, {
-            binding.progressBar.visibility = if (it) View.VISIBLE else View.GONE
-            binding.mainView.visibility = if (!it) View.VISIBLE else View.GONE
-            isErrorPHVisible(false)
-        })
-        userDetailViewModel.isFailure.observe(this, {
-            if (it){
-                binding.mainView.visibility = View.GONE
-                isErrorPHVisible(true)
+        val factory = ViewModelFactory.getInstance(this)
+        userDetailViewModel = ViewModelProvider(this, factory)[UserDetailViewModel::class.java]
+
+        userDetailViewModel.user.observe(this, { it ->
+            when(it){
+                is Resource.Loading -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                    binding.mainView.visibility = View.GONE
+                    isErrorPHVisible(false)
+                }
+                is Resource.Success -> {
+                    binding.progressBar.visibility = View.GONE
+                    binding.mainView.visibility = View.VISIBLE
+                    user = it.data
+                    user?.let {
+                        setDataToView(it)
+                    }
+                }
+                is Resource.Error -> {
+                    binding.progressBar.visibility = View.GONE
+                    binding.mainView.visibility = View.GONE
+                    isErrorPHVisible(true)
+                }
             }
         })
-        username?.let {
-            userDetailViewModel.getUserByUsername(it)?.observe(this, { userEntity ->
-                isFavorite = userEntity != null
-                setFabSelected(userEntity != null)
-                userFav = userEntity
-            })
-        }
+
+        userDetailViewModel.favoriteUsers.observe(this, {
+            isFavorite = it.any { user -> user.id == this.user?.id }
+            setFabSelected(isFavorite)
+        })
     }
 
     private fun init() {
@@ -80,13 +86,13 @@ class UserDetailActivity : AppCompatActivity(), View.OnClickListener {
     private fun getIntentData(){
         val username = intent.getStringExtra(MainActivity.EXTRA_USERNAME)
         username?.let {
-            userDetailViewModel.getUser(it)
-            userDetailViewModel.getFollowers(it, 1)
+            userDetailViewModel.setUsername(it)
             this.username = it
         }
     }
 
     private fun setDataToView(user: User){
+        setFabSelected(user.isFavorite)
         with(binding){
             tvName.text = user.name
             tvUsername.text = user.login
@@ -95,10 +101,8 @@ class UserDetailActivity : AppCompatActivity(), View.OnClickListener {
             tvLocation.text = user.location
             tvCompany.text = user.company
             tvRepositories.text = resources.getString(R.string.repositories, user.publicRepos.toString())
+            ivProfile.loadImage(user.avatarUrl)
         }
-
-        binding.ivProfile.loadImage(user.avatarUrl)
-
     }
 
     private fun shareContent(){
@@ -114,9 +118,6 @@ class UserDetailActivity : AppCompatActivity(), View.OnClickListener {
         binding.ivError.visibility = if (b) View.VISIBLE else View.GONE
         binding.tvPhError.visibility = if (b) View.VISIBLE else View.GONE
     }
-
-
-
 
     override fun onClick(p0: View?) {
         when(p0?.id){
@@ -134,11 +135,12 @@ class UserDetailActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun setIsFavorite(){
         if (!isFavorite){
-            user?.let { userDetailViewModel.insertToFavorite(it) }
+            user?.let { userDetailViewModel.setFavorite(it, !isFavorite) }
             setFabSelected(true)
         } else {
             showConfirmDialog()
         }
+        isFavorite = !isFavorite
     }
 
     private fun setFabSelected(isSelected: Boolean){
@@ -158,8 +160,8 @@ class UserDetailActivity : AppCompatActivity(), View.OnClickListener {
         builder.setMessage(getString(R.string.desc_confirm_delete))
 
         builder.setPositiveButton("YES") { dialog, _ ->
-            userFav?.let {
-                userDetailViewModel.deleteFavorite(it)
+            user?.let {
+                userDetailViewModel.setFavorite(it, isFavorite)
             }
             setFabSelected(false)
             dialog.dismiss()

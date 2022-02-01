@@ -2,23 +2,26 @@ package com.dhiva.githubuser.userdetail.following
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dhiva.githubuser.R
-import com.dhiva.githubuser.core.data.source.remote.response.User
+import com.dhiva.githubuser.core.data.Resource
+import com.dhiva.githubuser.core.domain.model.User
 import com.dhiva.githubuser.core.ui.ListUserAdapter
+import com.dhiva.githubuser.core.ui.ViewModelFactory
 import com.dhiva.githubuser.databinding.FragmentViewPagerBinding
 import com.dhiva.githubuser.home.MainActivity
 import com.dhiva.githubuser.userdetail.UserDetailActivity
 import com.dhiva.githubuser.userdetail.UserDetailViewModel
 
-class FollowingFragment : Fragment() {
+class FollowingFragment(private val username: String?) : Fragment() {
     private var _binding: FragmentViewPagerBinding? = null
-    private val viewModel: UserDetailViewModel by activityViewModels()
+    private lateinit var viewModel: UserDetailViewModel
+    private val listAdapter = ListUserAdapter()
 
     private val binding get() = _binding!!
 
@@ -29,25 +32,41 @@ class FollowingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.following.observe(viewLifecycleOwner, {
-            if (it.isEmpty()){
-                binding.rvData.visibility = View.GONE
-                binding.tvNoData.visibility = View.VISIBLE
-                binding.tvNoData.text = resources.getString(R.string.no_following)
-            } else {
-                showRecyclerList(it)
+
+        initRecyclerList()
+        val factory = ViewModelFactory.getInstance(requireActivity())
+        viewModel = ViewModelProvider(this, factory)[UserDetailViewModel::class.java]
+
+        viewModel.following.observe(viewLifecycleOwner, { users ->
+            when(users){
+                is Resource.Loading -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+                is Resource.Success -> {
+                    binding.progressBar.visibility = View.GONE
+                    if (users.data != null && users.data.isNotEmpty()){
+                        listAdapter.setData(users.data)
+                    } else {
+                        binding.tvNoData.visibility = View.VISIBLE
+                        binding.tvNoData.text = resources.getString(R.string.no_followers)
+                    }
+                }
+                is Resource.Error -> {
+                    binding.rvData.visibility = View.GONE
+                    binding.tvNoData.visibility = View.VISIBLE
+                    binding.tvNoData.text = users.message
+                }
             }
         })
-        viewModel.setIsFollowingFragmentCreated(true)
-        viewModel.isLoadingFollowing.observe(viewLifecycleOwner, {
-            binding.progressBar.visibility = if (it) View.VISIBLE else View.GONE
-        })
+
+        username?.let {
+            viewModel.setUsername(it)
+        }
     }
 
-    private fun showRecyclerList(listUsers: List<User>){
+    private fun initRecyclerList(){
         binding.rvData.setHasFixedSize(true)
         binding.rvData.layoutManager = LinearLayoutManager(context)
-        val listAdapter = ListUserAdapter(listUsers)
         binding.rvData.adapter = listAdapter
 
         listAdapter.setOnItemClickCallback(object : ListUserAdapter.OnItemClickCallback{
