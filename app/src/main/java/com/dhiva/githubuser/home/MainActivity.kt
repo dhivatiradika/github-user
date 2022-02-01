@@ -1,8 +1,8 @@
 package com.dhiva.githubuser.home
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
@@ -13,7 +13,6 @@ import com.dhiva.githubuser.core.data.Resource
 import com.dhiva.githubuser.core.domain.model.User
 import com.dhiva.githubuser.core.ui.ListUserAdapter
 import com.dhiva.githubuser.databinding.ActivityMainBinding
-import com.dhiva.githubuser.favorite.FavoriteActivity
 import com.dhiva.githubuser.userdetail.UserDetailActivity
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -199,7 +198,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(p0: View?) {
         when (p0?.id){
-            R.id.ib_favorite -> startActivity(Intent(this@MainActivity, FavoriteActivity::class.java))
+            R.id.ib_favorite -> {
+                val uri = Uri.parse("githubapp://favorite")
+                startActivity(Intent(Intent.ACTION_VIEW, uri))
+            }
             R.id.ib_setting -> SettingDialog().show(supportFragmentManager, "SettingFragment")
         }
     }

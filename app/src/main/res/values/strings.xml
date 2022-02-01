@@ -33,5 +33,6 @@
     <string name="setting">Setting</string>
     <string name="dark_mode">Dark Mode</string>
     <string name="app_version_footnote">GitHub User v1.0.0</string>
+    <string name="title_favorite">Module Title</string>
 
 </resources>

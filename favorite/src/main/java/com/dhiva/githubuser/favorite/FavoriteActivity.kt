@@ -8,10 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dhiva.githubuser.core.domain.model.User
 import com.dhiva.githubuser.core.ui.ListUserAdapter
-import com.dhiva.githubuser.databinding.ActivityFavoriteBinding
+import com.dhiva.githubuser.favorite.databinding.ActivityFavoriteBinding
+import com.dhiva.githubuser.favorite.di.favoriteModule
 import com.dhiva.githubuser.home.MainActivity
 import com.dhiva.githubuser.userdetail.UserDetailActivity
 import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.context.loadKoinModules
 
 class FavoriteActivity : AppCompatActivity() {
     private lateinit var binding: ActivityFavoriteBinding
@@ -22,6 +24,8 @@ class FavoriteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityFavoriteBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        loadKoinModules(favoriteModule)
 
         initView()
         initViewModel()
