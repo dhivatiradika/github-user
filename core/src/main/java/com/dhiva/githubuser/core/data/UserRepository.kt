@@ -18,26 +18,7 @@ class UserRepository(
     private val appExecutors: AppExecutors,
 ) : IUserRepository {
 
-    companion object {
-        @Volatile
-        private var instance: com.dhiva.githubuser.core.data.UserRepository? = null
-
-        fun getInstance(
-            remoteData: RemoteDataSource,
-            localData: LocalDataSource,
-            appExecutors: AppExecutors
-        ): com.dhiva.githubuser.core.data.UserRepository =
-            com.dhiva.githubuser.core.data.UserRepository.Companion.instance ?: synchronized(this) {
-                com.dhiva.githubuser.core.data.UserRepository.Companion.instance
-                    ?: com.dhiva.githubuser.core.data.UserRepository(
-                        remoteData,
-                        localData,
-                        appExecutors
-                    )
-            }
-    }
-
-    override fun searchUser(query: String): Flow<com.dhiva.githubuser.core.data.Resource<List<User>>> =
+    override fun searchUser(query: String): Flow<Resource<List<User>>> =
         object : com.dhiva.githubuser.core.data.NetworkBoundResource<List<User>, List<UserResponse>>() {
             override fun shouldFetch(data: List<User>?): Boolean = true
 
@@ -57,7 +38,7 @@ class UserRepository(
             }
         }.asFlow()
 
-    override fun getUsers(): Flow<com.dhiva.githubuser.core.data.Resource<List<User>>> =
+    override fun getUsers(): Flow<Resource<List<User>>> =
         object : com.dhiva.githubuser.core.data.NetworkBoundResource<List<User>, List<UserResponse>>() {
             override fun shouldFetch(data: List<User>?): Boolean = true
 
@@ -88,7 +69,7 @@ class UserRepository(
         }
     }
 
-    override fun getUser(username: String): Flow<com.dhiva.githubuser.core.data.Resource<User>> =
+    override fun getUser(username: String): Flow<Resource<User>> =
         object : com.dhiva.githubuser.core.data.NetworkBoundResource<User, UserResponse>() {
             override fun loadFromDB(): Flow<User> {
                 return localDataSource.getUserByUsername(username).map { DataMapper.mapSingleEntitiesToDomain(it) }
@@ -108,7 +89,7 @@ class UserRepository(
 
         }.asFlow()
 
-    override fun getFollowers(username: String, page: Int): Flow<com.dhiva.githubuser.core.data.Resource<List<User>>>  =
+    override fun getFollowers(username: String, page: Int): Flow<Resource<List<User>>>  =
         object : com.dhiva.githubuser.core.data.NetworkBoundResource<List<User>, List<UserResponse>>() {
             override fun shouldFetch(data: List<User>?): Boolean = true
 
@@ -135,7 +116,7 @@ class UserRepository(
             }
         }.asFlow()
 
-    override fun getFollowing(username: String, page: Int): Flow<com.dhiva.githubuser.core.data.Resource<List<User>>>  =
+    override fun getFollowing(username: String, page: Int): Flow<Resource<List<User>>>  =
         object : com.dhiva.githubuser.core.data.NetworkBoundResource<List<User>, List<UserResponse>>() {
             override fun shouldFetch(data: List<User>?): Boolean = true
 

@@ -14,6 +14,7 @@ import com.dhiva.githubuser.home.MainActivity
 import com.dhiva.githubuser.userdetail.UserDetailActivity
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.context.loadKoinModules
+import org.koin.core.context.unloadKoinModules
 
 class FavoriteActivity : AppCompatActivity() {
     private lateinit var binding: ActivityFavoriteBinding
@@ -71,5 +72,10 @@ class FavoriteActivity : AppCompatActivity() {
         val intent = Intent(this@FavoriteActivity, UserDetailActivity::class.java)
         intent.putExtra(MainActivity.EXTRA_USERNAME, user.login)
         startActivity(intent)
+    }
+
+    override fun onDestroy() {
+        unloadKoinModules(favoriteModule)
+        super.onDestroy()
     }
 }

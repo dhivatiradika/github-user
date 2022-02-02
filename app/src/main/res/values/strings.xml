@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">GitHub User</string>
-    <string name="user_image_profile">user image profile</string>
     <string name="dummy_number">445</string>
     <string name="followers">Followers</string>
     <string name="icon_followers">icon followers</string>
@@ -23,16 +22,12 @@
     <string name="placeholder_error">placeholder error</string>
     <string name="placeholder_error_text">Cannot connect to a server at this moment</string>
     <string name="no_followers">There is no followers</string>
-    <string name="no_following">There is no following</string>
     <string name="favorite_icon">favorite icon</string>
     <string name="setting_icon">setting icon</string>
-    <string name="no_favorite">Favorite list is empty</string>
-    <string name="favorite">Favorite</string>
     <string name="title_confirm_delete">Delete from favorite?</string>
     <string name="desc_confirm_delete">Are you sure want to delete this user from favorite?</string>
     <string name="setting">Setting</string>
     <string name="dark_mode">Dark Mode</string>
     <string name="app_version_footnote">GitHub User v1.0.0</string>
-    <string name="title_favorite">Module Title</string>
 
 </resources>

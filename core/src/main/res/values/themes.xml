@@ -1,0 +1,16 @@
+<resources>
+
+    <style name="TextStyle">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/darker_gray</item>
+    </style>
+
+    <style name="TextStyle.title">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextStyle.title.blue">
+        <item name="android:textColor">@color/blue</item>
+    </style>
+</resources>

@@ -10,15 +10,17 @@ import androidx.fragment.app.activityViewModels
 import com.dhiva.githubuser.databinding.FragmentSettingBinding
 
 class SettingDialog: DialogFragment() {
-    private lateinit var binding: FragmentSettingBinding
+    private var _binding: FragmentSettingBinding? = null
     private val viewModel: MainViewModel by activityViewModels()
+
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentSettingBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentSettingBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
@@ -37,5 +39,10 @@ class SettingDialog: DialogFragment() {
         viewModel.getThemeSettings().observe(this, {
             binding.switchDarkMode.isChecked = it
         })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

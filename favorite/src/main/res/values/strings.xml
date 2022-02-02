@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="favorite">Favorite</string>
+    <string name="no_favorite">There is no favorite users</string>
+</resources>

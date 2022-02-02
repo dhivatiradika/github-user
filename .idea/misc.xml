@@ -6,6 +6,7 @@
         <entry key="app/src/main/res/layout/activity_favorite.xml" value="0.17553191489361702" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.17553191489361702" />
         <entry key="core/src/main/res/layout/item_user.xml" value="0.1598731884057971" />
+        <entry key="favorite/src/main/res/layout/activity_favorite.xml" value="0.1490036231884058" />
       </map>
     </option>
   </component>

@@ -3,14 +3,14 @@ package com.dhiva.githubuser
 import android.app.Application
 import com.dhiva.githubuser.di.useCaseModule
 import com.dhiva.githubuser.di.viewModelModule
-import databaseModule
-import networkModule
+import com.dhiva.githubuser.core.di.databaseModule
+import com.dhiva.githubuser.core.di.networkModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
-import preferencesModule
-import repositoryModule
+import com.dhiva.githubuser.core.di.preferencesModule
+import com.dhiva.githubuser.core.di.repositoryModule
 
 class MyApplication : Application() {
     override fun onCreate() {

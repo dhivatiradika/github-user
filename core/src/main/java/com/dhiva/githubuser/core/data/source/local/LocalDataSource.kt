@@ -7,15 +7,6 @@ import com.dhiva.githubuser.core.data.source.local.room.UserDao
 import kotlinx.coroutines.flow.Flow
 
 class LocalDataSource(private val userDao: UserDao, private val userAttributesDao: UserAttributesDao) {
-    companion object {
-        private var instance: LocalDataSource? = null
-
-        fun getInstance(userDao: UserDao, userAttributesDao: UserAttributesDao): LocalDataSource =
-            instance ?: synchronized(this) {
-                instance ?: LocalDataSource(userDao, userAttributesDao)
-            }
-    }
-
     fun getAllUser(): Flow<List<UserEntity>> = userDao.getAllUser()
 
     fun getFavoriteUser(): Flow<List<UserEntity>> = userDao.getFavoriteUser()

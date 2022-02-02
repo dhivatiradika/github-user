@@ -10,7 +10,7 @@ import com.dhiva.githubuser.core.utils.loadImage
 import com.dhiva.githubuser.core.databinding.ItemUserBinding
 import java.util.*
 
-class ListUserAdapter() : RecyclerView.Adapter<ListUserAdapter.ListViewHolder>() {
+class ListUserAdapter : RecyclerView.Adapter<ListUserAdapter.ListViewHolder>() {
     private lateinit var onItemClickCallback: OnItemClickCallback
     private var listUser = ArrayList<User>()
 

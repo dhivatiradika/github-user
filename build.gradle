@@ -21,7 +21,7 @@ buildscript {
     ext.glide_version = "4.12.0"
     ext.circleimage_version = "3.1.0"
     ext.retrofit_version = "2.9.0"
-    ext.logging_interceptor_version = "4.9.0"
+    ext.logging_interceptor_version = "5.0.0-alpha.3"
     ext.activity_version = "1.4.0"
     ext.fragment_version = "1.4.1"
     ext.viewpager_version = "1.0.0"

@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(private val userUseCase: UserUseCase, private val pref: SettingPreferences) : ViewModel() {
 
-    val query: MutableLiveData<String> = MutableLiveData()
+    private val query: MutableLiveData<String> = MutableLiveData()
     val users = Transformations.switchMap(query) {
         userUseCase.searchUser(it).asLiveData()
     }

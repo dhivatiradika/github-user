@@ -24,10 +24,6 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="TextStyle.title.blue">
-        <item name="android:textColor">@color/white</item>
-    </style>
-
     <style name="ImageButtonStyle">
         <item name="android:layout_width">48dp</item>
         <item name="android:layout_height">48dp</item>
