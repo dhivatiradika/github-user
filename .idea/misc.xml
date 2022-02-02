@@ -3,8 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable-night/account.xml" value="0.3712820512820513" />
         <entry key="app/src/main/res/layout/activity_favorite.xml" value="0.17553191489361702" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.17553191489361702" />
+        <entry key="app/src/main/res/layout/activity_user_detail.xml" value="0.1" />
+        <entry key="core/src/main/res/drawable/account.xml" value="0.3712820512820513" />
         <entry key="core/src/main/res/layout/item_user.xml" value="0.1598731884057971" />
         <entry key="favorite/src/main/res/layout/activity_favorite.xml" value="0.1490036231884058" />
       </map>
