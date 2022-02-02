@@ -29,7 +29,7 @@
                 android:layout_height="match_parent"
                 android:contentDescription="@string/user_image_profile"
                 android:scaleType="centerCrop"
-                app:srcCompat="@drawable/user1" />
+                app:srcCompat="@drawable/account" />
 
         </androidx.cardview.widget.CardView>
 
