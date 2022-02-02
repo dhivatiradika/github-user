@@ -28,6 +28,9 @@ buildscript {
     ext.preferences_version = "1.0.0"
     ext.lifecycle_version = "2.4.0"
     ext.koin_version = "2.1.6"
+    ext.leakcanary_version = "2.4"
+    ext.sqlite_ktx_version = "2.2.0"
+    ext.sql_chiper_version = "4.4.0"
 
 
     dependencies {

@@ -18,12 +18,16 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
-        buildConfigField("String", "GITHUB_TOKEN", '"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"')
+        buildConfigField("String", "GITHUB_TOKEN", '"YOUR_TOKEN"')
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -53,4 +57,6 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutines_version"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
 
+    implementation "net.zetetic:android-database-sqlcipher:$sql_chiper_version"
+    implementation "androidx.sqlite:sqlite-ktx:$sqlite_ktx_version"
 }
